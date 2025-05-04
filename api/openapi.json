@@ -16,19 +16,34 @@
         }
     ],
     "paths": {
-        "/telemetry": {
+        "/telemetry/{deviceId}": {
             "post": {
                 "summary": "Upload telemetry data",
                 "operationId": "createTelemetry",
                 "tags": [
                     "Telemetry"
                 ],
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The device ID",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/PostTelemetry"
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/PostTelemetry"
+                                }
                             }
                         }
                     }
