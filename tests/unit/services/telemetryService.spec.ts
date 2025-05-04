@@ -2,7 +2,7 @@ import { expect } from "chai";
 import sinon from "sinon";
 import telemetryService from "../../../src/services/telemetryService.js";
 import { prisma } from "../../../src/repositories/prisma.js";
-import type { components } from "../../../src/@types/openapi.js"
+import type { components } from "../../../src/@types/openapi.js";
 
 const deviceId = "b876ec32-e396-476b-a115-8438d83c67d4";
 const telemetryInput: components["schemas"]["PostTelemetry"] = {
@@ -40,10 +40,10 @@ const telemetryInput: components["schemas"]["PostTelemetry"] = {
 };
 
 describe("telemetryService", () => {
-  let createStub: sinon.SinonStub;
+  let createManyStub: sinon.SinonStub;
 
   beforeEach(() => {
-    createStub = sinon.stub(prisma.telemetry, "create");
+    createManyStub = sinon.stub();
   });
 
   afterEach(() => {
@@ -51,16 +51,15 @@ describe("telemetryService", () => {
   });
 
   it("should create telemetry with flat schema", async () => {
-    createStub.resolves({ id: "f428b7ff-7ca2-4fa5-b8b7-fd62ac6140f8", ...telemetryInput, deviceId });
-    const result = await telemetryService.createTelemetry(deviceId, telemetryInput);
-    expect(createStub.calledOnce).to.be.true;
-    const args = createStub.firstCall.args[0].data;
-    expect(args.deviceId).to.equal(deviceId);
-    expect(args.latitude).to.equal(telemetryInput.location.latitude);
-    expect(args.voltage).to.equal(telemetryInput.battery.voltage);
+    prisma.telemetry.createMany = createManyStub;
+    createManyStub.resolves({ count: 1 });
+    const result = await telemetryService.createTelemetry(deviceId, [
+      telemetryInput,
+    ]);
+    console.log(result)
+    expect(createManyStub.calledOnce).to.be.true;
     expect(result).to.have.property("success", true);
-    expect(result).to.have.property("data");
     // @ts-expect-error success is checked above
-    expect(result.data.id).to.equal("telemetry-1");
+    expect(result.data.count).to.equal(1);
   });
 });

@@ -3,9 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-
-// biome-ignore lint/style/useNamingConvention: <explanation>
-export  interface paths {
+export interface paths {
     "/telemetry/{deviceId}": {
         parameters: {
             query?: never;
@@ -24,14 +22,12 @@ export  interface paths {
         trace?: never;
     };
 }
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export type webhooks = Record<string, never>;
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export interface components {
     schemas: {
         PostTelemetry: {
             /** Format: date-time */
-            date: string;
+            date: string | null;
             location: components["schemas"]["Location"];
             battery: components["schemas"]["Battery"];
             sensors: components["schemas"]["Sensors"];
@@ -104,9 +100,7 @@ export interface components {
     headers: never;
     pathItems: never;
 }
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export type $defs = Record<string, never>;
-// biome-ignore lint/style/useNamingConvention: <explanation>
 export interface operations {
     createTelemetry: {
         parameters: {
@@ -130,7 +124,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "text/plain": string;
+                    "application/json": {
+                        count?: number;
+                    };
                 };
             };
             /** @description The request has failed. */

@@ -52,9 +52,14 @@
                     "200": {
                         "description": "Successful operation",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "properties": {
+                                        "count": {
+                                            "type": "integer"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -96,7 +101,8 @@
                 "properties": {
                     "date": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "nullable": true
                     },
                     "location": {
                         "$ref": "#/components/schemas/Location"
