@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "swc src  --strip-leading-paths --out-dir dist",
-    "build:types": "yarn build",
+    "build": "swc src --out-dir dist",
     "test:unit": "mocha --no-warnings 'tests/unit/**/*.spec.ts'",
     "test:unit-coverage": "c8 yarn test:unit",
     "test:ci-unit": "c8 yarn test:unit --reporter mocha-junit-reporter",

@@ -1,16 +1,7 @@
 {
   "all": true,
   "src": "src",
-  "reporter": [
-    "cobertura",
-    "text"
-  ],
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "tests",
-    "**/generated/**",
-    "src/instrumentation.ts"
-  ]
+  "reporter": ["cobertura", "text"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["tests", "**/generated/**", "src/instrumentation.ts"]
 }

@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import sinon from "sinon";
-import telemetryService from "../../../src/services/telemetryService.js";
-import { prisma } from "../../../src/repositories/prisma.js";
 import type { components } from "../../../src/@types/openapi.js";
+import { prisma } from "../../../src/repositories/prisma.js";
+import telemetryService from "../../../src/services/telemetryService.js";
 
 const deviceId = "b876ec32-e396-476b-a115-8438d83c67d4";
 const telemetryInput: components["schemas"]["PostTelemetry"] = {
@@ -56,7 +56,7 @@ describe("telemetryService", () => {
     const result = await telemetryService.createTelemetry(deviceId, [
       telemetryInput,
     ]);
-    console.log(result)
+    console.log(result);
     expect(createManyStub.calledOnce).to.be.true;
     expect(result).to.have.property("success", true);
     // @ts-expect-error success is checked above

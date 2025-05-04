@@ -1,6 +1,6 @@
 import type { ServiceReturnTypeV2 } from "../@types/controllerUtils.js";
-import { prisma } from "../repositories/prisma.js";
 import type { components } from "../@types/openapi.js";
+import { prisma } from "../repositories/prisma.js";
 
 const createTelemetry = async (
   deviceId: string,
