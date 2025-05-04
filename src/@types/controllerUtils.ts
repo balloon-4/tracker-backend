@@ -49,27 +49,28 @@ export const responseWithError = async (
   );
 };
 
-export const errorWrapperV2 = async <T extends keyof operations & string>(
-  req: Request<ParamsDictionary, any, any, Record<string, any>>,
-  res: Response,
-  result: Promise<ServiceReturnTypeV2<T>>,
-): Promise<
+export const errorWrapperV3 = async <T extends keyof operations & string>(
+    req: Request<ParamsDictionary, any, any, Record<string, any>>,
+    res: Response,
+    result: () => Promise<ServiceReturnTypeV2<T>>,
+  ): Promise<
   // @ts-expect-error it can
-  Extract<ServiceReturnTypeV2<T>, { success: true }>["data"] | undefined
-> => {
-  try {
-    const r = await result;
-    if (!r.success) {
-      responseWithError(req, res, r.error);
+    Extract<ServiceReturnTypeV2<T>, { success: true }>["data"] | undefined
+  > => {
+    try {
+      const r = await result();
+      if (!r.success) {
+        responseWithError(req, res, r.error);
+        return undefined;
+      }
+      return r.data;
+    } catch (error) {
+      console.error(error);
+      responseWithError(req, res, {
+        status: 500,
+        title: "Internal Server Error",
+      });
       return undefined;
     }
-    return r.data;
-  } catch (error) {
-    console.error(error);
-    responseWithError(req, res, {
-      status: 500,
-      title: "Internal Server Error",
-    });
-    return undefined;
-  }
-};
+  };
+  

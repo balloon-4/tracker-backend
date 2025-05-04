@@ -3,7 +3,9 @@
  * Do not make direct changes to the file.
  */
 
-export interface paths {
+
+// biome-ignore lint/style/useNamingConvention: <explanation>
+export  interface paths {
     "/telemetry/{deviceId}": {
         parameters: {
             query?: never;
@@ -22,7 +24,9 @@ export interface paths {
         trace?: never;
     };
 }
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export type webhooks = Record<string, never>;
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export interface components {
     schemas: {
         PostTelemetry: {
@@ -100,7 +104,9 @@ export interface components {
     headers: never;
     pathItems: never;
 }
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export type $defs = Record<string, never>;
+// biome-ignore lint/style/useNamingConvention: <explanation>
 export interface operations {
     createTelemetry: {
         parameters: {
