@@ -1,0 +1,17 @@
+{
+    "extends": "@tsconfig/strictest/tsconfig.json",
+    "compilerOptions": {
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "outDir": "./dist"
+    },
+    "include": [
+      "./src/**/*.ts",
+      "./src/**/*.tsx"
+    ],
+    "exclude": [
+      "node_modules",
+      "dist",
+      "test",
+    ]
+  }
