@@ -56,7 +56,6 @@ describe("telemetryService", () => {
     const result = await telemetryService.createTelemetry(deviceId, [
       telemetryInput,
     ]);
-    console.log(result);
     expect(createManyStub.calledOnce).to.be.true;
     expect(result).to.have.property("success", true);
     // @ts-expect-error success is checked above
