@@ -1,164 +1,306 @@
 {
-  "openapi": "3.0.3",
-  "info": {
-    "title": "Some Template",
-    "description": "some thing",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/license/mit/"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "https://api-staging.aleasat.space/",
-      "description": "Staging"
-    },
-    {
-      "url": "https://api.aleasat.space/",
-      "description": "Production"
-    }
-  ],
-  "tags": [
-    {
-      "name": "Command Request",
-      "description": "Passes of Sat"
-    },
-    {
-      "name": "Image Request"
-    },
-    {
-      "name": "Location Track",
-      "description": "The time the satellite will pass the location"
-    }
-  ],
-  "paths": {
-    "/some/{someId}": {
-      "get": {
-        "tags": [
-          "Some"
-        ],
-        "summary": "Get a some",
-        "description": "Get a some",
-        "operationId": "getSome",
-        "parameters": [
-          {
-            "name": "someId",
-            "in": "path",
-            "description": "The Id of the some",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Some"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "The request has failed.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              },
-              "application/problem+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Problem"
-                }
-              }
-            }
-          }
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Tracker Backend",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/license/mit/"
         },
-        "security": [
-          {
-            "AccessToken": []
-          }
-        ]
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Some": {
-        "required": [
-          "id",
-          "imageId",
-          "placeholderId"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "imageId": {
-            "type": "string",
-            "nullable": true
-          },
-          "placeholderId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "required": [
-          "code",
-          "message"
-        ],
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "description": "The HTTP status code"
-          },
-          "message": {
-            "type": "string",
-            "description": "The error"
-          }
-        }
-      },
-      "Problem": {
-        "type": "object",
-        "description": "An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).",
-        "required": [
-          "title",
-          "status"
-        ],
-        "properties": {
-          "detail": {
-            "type": "string",
-            "description": "The details of the problem"
-          },
-          "status": {
-            "type": "integer",
-            "description": "The HTTP status code"
-          },
-          "title": {
-            "type": "string",
-            "description": "The type of error (text)"
-          },
-          "type": {
-            "type": "string",
-            "description": "The type of error (URL)"
-          }
-        }
-      }
+        "version": "1.0.0"
     },
-    "securitySchemes": {
-      "AccessToken": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    "servers": [],
+    "tags": [
+        {
+            "name": "Telemetry",
+            "description": "Telemetry API"
+        }
+    ],
+    "paths": {
+        "/telemetry": {
+            "post": {
+                "summary": "Upload telemetry data",
+                "operationId": "createTelemetry",
+                "tags": [
+                    "Telemetry"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostTelemetry"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "The request has failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            },
+                            "application/problem+json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Problem"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "AccessToken": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PostTelemetry": {
+                "required": [
+                    "date",
+                    "location",
+                    "battery",
+                    "sensors",
+                    "cellular"
+                ],
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/Location"
+                    },
+                    "battery": {
+                        "$ref": "#/components/schemas/Battery"
+                    },
+                    "sensors": {
+                        "$ref": "#/components/schemas/Sensors"
+                    },
+                    "cellular": {
+                        "$ref": "#/components/schemas/Cellular"
+                    }
+                }
+            },
+            "GetTelemetry": {
+                "required": [
+                    "id",
+                    "date",
+                    "location",
+                    "battery",
+                    "sensors",
+                    "cellular"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "location": {
+                        "$ref": "#/components/schemas/Location"
+                    },
+                    "battery": {
+                        "$ref": "#/components/schemas/Battery"
+                    },
+                    "sensors": {
+                        "$ref": "#/components/schemas/Sensors"
+                    },
+                    "cellular": {
+                        "$ref": "#/components/schemas/Cellular"
+                    }
+                }
+            },
+            "Battery": {
+                "type": "object",
+                "required": [
+                    "voltage",
+                    "current",
+                    "temperature",
+                    "level",
+                    "charging"
+                ],
+                "properties": {
+                    "voltage": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "current": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "temperature": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "level": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "charging": {
+                        "type": "boolean",
+                        "nullable": true
+                    }
+                }
+            },
+            "Location": {
+                "type": "object",
+                "properties": {
+                    "latitude": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "speed": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "accuracy": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "altitude": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "provider": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "timeToFix": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "bearing": {
+                        "type": "number",
+                        "nullable": true
+                    }
+                }
+            },
+            "Sensors": {
+                "type": "object",
+                "required": [
+                    "barometer"
+                ],
+                "properties": {
+                    "barometer": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "light": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "proximity": {
+                        "type": "number",
+                        "nullable": true
+                    }
+                }
+            },
+            "Cellular": {
+                "type": "object",
+                "required": [
+                    "networkType",
+                    "signalStrength"
+                ],
+                "properties": {
+                    "networkType": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "signalStrength": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "cellId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mcc": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "mnc": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "The HTTP status code"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "The error"
+                    }
+                }
+            },
+            "Problem": {
+                "type": "object",
+                "description": "An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).",
+                "required": [
+                    "title",
+                    "status"
+                ],
+                "properties": {
+                    "detail": {
+                        "type": "string",
+                        "description": "The details of the problem"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "The HTTP status code"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The type of error (text)"
+                    },
+                    "type": {
+                        "type": "string",
+                        "description": "The type of error (URL)"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "AccessToken": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
     }
-  }
 }

@@ -14,9 +14,10 @@
     "lint:ci": "biome ci",
     "lint:fix": "biome check --fix",
     "start": "node dist/server.js",
-    "dev": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm --loader @opentelemetry/instrumentation/hook.mjs --watch src src/server.ts",
     "prisma": "dotenvx run --convention=nextjs -- prisma",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "generate:prisma": "prisma generate",
+    "generate:openapi": "openapi-typescript ./api/openapi.json -o ./src/@types/openapi.d.ts"
   },
   "dependencies": {
     "@opentelemetry/api": "^1.7.0",
