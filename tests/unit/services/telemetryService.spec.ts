@@ -14,7 +14,6 @@ const telemetryInput: components["schemas"]["PostTelemetry"] = {
     accuracy: 0.1,
     altitude: 100,
     provider: "gps",
-    timestamp: new Date().toISOString(),
     timeToFix: 2.5,
     bearing: 180,
   },
@@ -33,9 +32,8 @@ const telemetryInput: components["schemas"]["PostTelemetry"] = {
   cellular: {
     networkType: "LTE",
     signalStrength: -70,
-    cellId: "cell-123",
-    mcc: "310",
-    mnc: "260",
+    signalPower: -90,
+    cellTower: "tower123",
   },
 };
 

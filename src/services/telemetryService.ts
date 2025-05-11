@@ -9,7 +9,7 @@ const createTelemetry = async (
   try {
     const data = input.map(
       ({ date, location, battery, sensors, cellular }) => ({
-        deviceId,
+        session: deviceId,
         date: new Date(date ?? Date.now()),
         // Location
         latitude: location.latitude ?? null,
@@ -18,9 +18,6 @@ const createTelemetry = async (
         accuracy: location.accuracy ?? null,
         altitude: location.altitude ?? null,
         provider: location.provider ?? null,
-        locationTimestamp: location.timestamp
-          ? new Date(location.timestamp)
-          : null,
         timeToFix: location.timeToFix ?? null,
         bearing: location.bearing ?? null,
         // Battery
@@ -36,9 +33,8 @@ const createTelemetry = async (
         // Cellular
         networkType: cellular.networkType ?? null,
         signalStrength: cellular.signalStrength ?? null,
-        cellId: cellular.cellId ?? null,
-        mcc: cellular.mcc ?? null,
-        mnc: cellular.mnc ?? null,
+        signalPower: cellular.signalPower ?? null,
+        cellTower: cellular.cellTower ?? null,
       }),
     );
 
@@ -49,6 +45,8 @@ const createTelemetry = async (
       data: { count: result.count },
     };
   } catch (error) {
+    console.error("Error creating telemetry:", error);
+    
     return {
       success: false,
       error: {

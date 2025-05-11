@@ -4,6 +4,7 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = []
+  binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,41 +12,41 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-model Device {
-  id    String  @id @db.Uuid
-  name  String
-  telemetry Telemetry[]
+model telemetry {
+  session        String
+  date           DateTime @db.Timestamptz(6)
+  // Location fields
+  latitude       Float?
+  longitude      Float?
+  speed          Float?
+  accuracy       Float?
+  altitude       Float?
+  provider       String?
+  timeToFix      Float?
+  bearing        Float?
+  // Battery fields
+  voltage        Float?
+  current        Float?
+  temperature    Float?
+  level          Int?
+  charging       Boolean?
+  // Sensors fields
+  barometer      Float?
+  light          Float?
+  proximity      Float?
+  // Cellular fields
+  networkType    String?
+  signalStrength Float?
+  signalPower    Float?
+  cellTower      String?
+
+  @@id([date, session])
 }
 
-model Telemetry {
-  id            String   @id @default(uuid()) @db.Uuid
-  deviceId      String
-  device        Device  @relation(fields: [deviceId], references: [id])
-  date          DateTime
-  // Location fields
-  latitude      Float?
-  longitude     Float?
-  speed         Float?
-  accuracy      Float?
-  altitude      Float?
-  provider      String?
-  locationTimestamp DateTime?
-  timeToFix     Float?
-  bearing       Float?
-  // Battery fields
-  voltage       Float?
-  current       Float?
-  temperature   Float?
-  level         Int?
-  charging      Boolean?
-  // Sensors fields
-  barometer     Float?
-  light         Float?
-  proximity     Float?
-  // Cellular fields
-  networkType     String?
-  signalStrength Float?
-  cellId        String?
-  mcc           String?
-  mnc           String?
+model log {
+  index   Int      @id @default(autoincrement())
+  content String
+  date    DateTime @db.Timestamptz(6)
+  level   String
+  session String
 }

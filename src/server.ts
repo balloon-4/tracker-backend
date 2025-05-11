@@ -1,5 +1,3 @@
-import "./instrumentation.js";
-
 import fs from "fs";
 import cors from "cors";
 import express, { type ErrorRequestHandler } from "express";

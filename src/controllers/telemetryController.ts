@@ -9,14 +9,14 @@ const createTelemetry = async (
   req: OperationsRequest<"createTelemetry">,
   res: Response,
 ) => {
-  await errorWrapperV3(
+  const result = await errorWrapperV3(
     req,
     res,
     async () =>
       await telemetryService.createTelemetry(req.params.deviceId, req.body),
   );
 
-  res.status(200).send("200 OK");
+  result && res.status(200).send("200 OK");
 };
 
 export default {

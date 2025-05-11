@@ -28,8 +28,7 @@
             "required": true,
             "description": "The device ID",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -194,11 +193,6 @@
             "type": "string",
             "nullable": true
           },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
           "timeToFix": {
             "type": "number",
             "nullable": true
@@ -239,15 +233,11 @@
             "type": "number",
             "nullable": true
           },
-          "cellId": {
-            "type": "string",
+          "signalPower": {
+            "type": "number",
             "nullable": true
           },
-          "mcc": {
-            "type": "string",
-            "nullable": true
-          },
-          "mnc": {
+          "cellTower": {
             "type": "string",
             "nullable": true
           }
