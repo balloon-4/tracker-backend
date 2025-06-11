@@ -28,7 +28,7 @@ model telemetry {
   voltage        Float?
   current        Float?
   temperature    Float?
-  level          Int?
+  level          Float?
   charging       Boolean?
   // Sensors fields
   barometer      Float?
