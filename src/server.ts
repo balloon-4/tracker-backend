@@ -23,7 +23,7 @@ if (process.env["NODE_ENV"] === "development") {
     const start = Date.now();
     res.on("finish", () => {
       const duration = Date.now() - start;
-      console.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${duration}ms`);
+      console.log(`${req.method} ${req.originalUrl} ${req.get("Content-Length") ?? 0} bytes | ${res.statusCode} ${duration}ms ${res.get("Content-Length") ?? 0} bytes`);
     });
     next();
   });
