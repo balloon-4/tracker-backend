@@ -40,7 +40,7 @@ const createTelemetry = async (
 
     console.log(`Creating ${data.length} telemetry records for device ${deviceId}`);
 
-    const result = await prisma.telemetry.createMany({ data });
+    const result = await prisma.telemetry.createMany({ data, skipDuplicates: true });
 
     return {
       success: true,
