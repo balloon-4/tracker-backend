@@ -17,6 +17,12 @@ This repository provides an endpoint/API for devices to send telemetry to. Recei
 
 This project is not ready for general usage. The current implementation has no auth of any kind, relying on middleware from a third party. The schema is immature. There should probably be error monitoring via Sentry or something similar.
 
+### Docker
+```
+docker pull ghcr.io/balloon-4/tracker-backend:main
+```
+Find [more versions here](https://github.com/balloon-4/tracker-backend/pkgs/container/tracker-backend)
+
 ## Development
 
 ### Prerequisites
