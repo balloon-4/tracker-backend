@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { ParamsDictionary, Query } from "express-serve-static-core";
 import type { components, operations } from "./openapi.js";
+import logger from "../util/logger.js";
 
 export type ServiceReturnTypeV2<T extends keyof operations & string> =
   | {
@@ -64,7 +65,7 @@ export const errorWrapperV3 = async <T extends keyof operations & string>(
     }
     return r.data;
   } catch (error) {
-    console.error(error);
+    logger.error(error)
     responseWithError(req, res, {
       status: 500,
       title: "Internal Server Error",

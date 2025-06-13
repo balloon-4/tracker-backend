@@ -1,6 +1,7 @@
 import type { ServiceReturnTypeV2 } from "../@types/controllerUtils.js";
 import type { components } from "../@types/openapi.js";
 import { prisma } from "../repositories/prisma.js";
+import logger from "../util/logger.js";
 
 const createTelemetry = async (
   deviceId: string,
@@ -38,17 +39,22 @@ const createTelemetry = async (
       }),
     );
 
-    console.log(`Creating ${data.length} telemetry records for device ${deviceId}`);
+    logger.info(
+      `Creating ${data.length} telemetry records for device ${deviceId}`,
+    );
 
-    const result = await prisma.telemetry.createMany({ data, skipDuplicates: true });
+    const result = await prisma.telemetry.createMany({
+      data,
+      skipDuplicates: true,
+    });
 
     return {
       success: true,
       data: { count: result.count },
     };
   } catch (error) {
-    console.error("Error creating telemetry:", error);
-    
+    logger.error('Error creating telemetry:', error);
+
     return {
       success: false,
       error: {

@@ -4,6 +4,7 @@ import express, { type ErrorRequestHandler } from "express";
 import * as OpenApiValidator from "express-openapi-validator";
 import swaggerUi, { type JsonObject } from "swagger-ui-express";
 import telemetryRoute from "./routes/telemetryRoute.js";
+import logger from "./util/logger.js";
 
 // import { jwtDecode } from "jwt-decode";
 // import { type UserInfoJwt } from "@aleasat/types";
@@ -23,7 +24,7 @@ if (process.env["NODE_ENV"] === "development") {
     const start = Date.now();
     res.on("finish", () => {
       const duration = Date.now() - start;
-      console.log(`${req.method} ${req.originalUrl} ${req.get("Content-Length") ?? 0} bytes | ${res.statusCode} ${duration}ms ${res.get("Content-Length") ?? 0} bytes`);
+      logger.info(`${req.method} ${req.originalUrl} ${req.get("Content-Length") ?? 0} bytes | ${res.statusCode} ${duration}ms ${res.get("Content-Length") ?? 0} bytes`);
     });
     next();
   });
@@ -68,4 +69,4 @@ app.use(((err, _req, res, _next) => {
   });
 }) as ErrorRequestHandler);
 
-app.listen(port, () => console.log("API Magic happening on port " + port));
+app.listen(port, () => logger.info("API Magic happening on port " + port));
