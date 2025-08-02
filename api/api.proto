@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+service Tracker {
+  rpc addPoint(PointRequest) returns (PointResponse) {}
+}
+
+message PointRequest {
+  string user_id = 1;
+}
+
+message PointResponse {
+  int32 status = 1;
+}
