@@ -14,7 +14,7 @@
     "postinstall": "prisma generate",
     "generate:prisma": "prisma generate",
     "generate:openapi": "openapi-typescript ./api/openapi.json -o ./src/@types/openapi.d.ts",
-    "generate:proto": "protoc --plugin=protoc-gen-ts_proto=.\\node_modules\\.bin\\protoc-gen-ts_proto.cmd --ts_opt=unary_rpc_promise=true --ts_opt=target=node --ts_out=.\\src\\proto .\\api\\*.proto"
+    "generate:proto": "protoc --plugin=protoc-gen-ts_proto=.\\node_modules\\.bin\\protoc-gen-ts_proto.cmd --ts_opt=unary_rpc_promise=true --ts_opt=target=node --ts_out=.\\src\\proto .\\api\\api.proto"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.20.0",
@@ -27,7 +27,6 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-openapi-validator": "^4.13.8",
-    "google-proto-files": "^5.0.0",
     "google-protobuf": "^3.21.4",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0",

@@ -7,10 +7,9 @@ import telemetryRoute from "./routes/telemetryRoute.js";
 import logger from "./util/logger.js";
 import * as grpc from "@grpc/grpc-js";
 import {
-  type PointRequest,
-  PointResponse,
   UnimplementedTrackerService,
 } from "./proto/api/api.js";
+import { TrackerService } from "./grpc/tracker.js";
 
 // import { jwtDecode } from "jwt-decode";
 // import { type UserInfoJwt } from "@aleasat/types";
@@ -78,17 +77,6 @@ app.use(((err, _req, res, _next) => {
 }) as ErrorRequestHandler);
 
 app.listen(port, () => logger.info("API Magic happening on port " + port));
-
-class TrackerService extends UnimplementedTrackerService {
-  addPoint(
-    call: grpc.ServerUnaryCall<PointRequest, PointResponse>,
-    callback: grpc.requestCallback<PointResponse>,
-  ): void {
-    logger.info(`Received point from user ${call.request.user_id}`);
-    // Here
-    callback(null, new PointResponse({ status: 25 }));
-  }
-}
 
 const server = new grpc.Server();
 

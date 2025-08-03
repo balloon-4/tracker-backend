@@ -5,40 +5,58 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
-export class PointRequest extends pb_1.Message {
+export class TelemetryRequest extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
-        user_id?: string;
+        deviceId?: string;
+        telemetries?: Telemetry[];
     }) {
         super();
-        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
-            if ("user_id" in data && data.user_id != undefined) {
-                this.user_id = data.user_id;
+            if ("deviceId" in data && data.deviceId != undefined) {
+                this.deviceId = data.deviceId;
+            }
+            if ("telemetries" in data && data.telemetries != undefined) {
+                this.telemetries = data.telemetries;
             }
         }
     }
-    get user_id() {
+    get deviceId() {
         return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
     }
-    set user_id(value: string) {
+    set deviceId(value: string) {
         pb_1.Message.setField(this, 1, value);
     }
+    get telemetries() {
+        return pb_1.Message.getRepeatedWrapperField(this, Telemetry, 2) as Telemetry[];
+    }
+    set telemetries(value: Telemetry[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 2, value);
+    }
     static fromObject(data: {
-        user_id?: string;
-    }): PointRequest {
-        const message = new PointRequest({});
-        if (data.user_id != null) {
-            message.user_id = data.user_id;
+        deviceId?: string;
+        telemetries?: ReturnType<typeof Telemetry.prototype.toObject>[];
+    }): TelemetryRequest {
+        const message = new TelemetryRequest({});
+        if (data.deviceId != null) {
+            message.deviceId = data.deviceId;
+        }
+        if (data.telemetries != null) {
+            message.telemetries = data.telemetries.map(item => Telemetry.fromObject(item));
         }
         return message;
     }
     toObject() {
         const data: {
-            user_id?: string;
+            deviceId?: string;
+            telemetries?: ReturnType<typeof Telemetry.prototype.toObject>[];
         } = {};
-        if (this.user_id != null) {
-            data.user_id = this.user_id;
+        if (this.deviceId != null) {
+            data.deviceId = this.deviceId;
+        }
+        if (this.telemetries != null) {
+            data.telemetries = this.telemetries.map((item: Telemetry) => item.toObject());
         }
         return data;
     }
@@ -46,19 +64,24 @@ export class PointRequest extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.user_id.length)
-            writer.writeString(1, this.user_id);
+        if (this.deviceId.length)
+            writer.writeString(1, this.deviceId);
+        if (this.telemetries.length)
+            writer.writeRepeatedMessage(2, this.telemetries, (item: Telemetry) => item.serialize(writer));
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PointRequest {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PointRequest();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TelemetryRequest {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TelemetryRequest();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    message.user_id = reader.readString();
+                    message.deviceId = reader.readString();
+                    break;
+                case 2:
+                    reader.readMessage(message.telemetries, () => pb_1.Message.addToRepeatedWrapperField(message, 2, Telemetry.deserialize(reader), Telemetry));
                     break;
                 default: reader.skipField();
             }
@@ -68,44 +91,128 @@ export class PointRequest extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static deserializeBinary(bytes: Uint8Array): PointRequest {
-        return PointRequest.deserialize(bytes);
+    static deserializeBinary(bytes: Uint8Array): TelemetryRequest {
+        return TelemetryRequest.deserialize(bytes);
     }
 }
-export class PointResponse extends pb_1.Message {
+export class Telemetry extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
-        status?: number;
+        date?: string;
+        location?: Location;
+        battery?: Battery;
+        sensors?: Sensors;
+        cellular?: Cellular;
     }) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
-            if ("status" in data && data.status != undefined) {
-                this.status = data.status;
+            if ("date" in data && data.date != undefined) {
+                this.date = data.date;
+            }
+            if ("location" in data && data.location != undefined) {
+                this.location = data.location;
+            }
+            if ("battery" in data && data.battery != undefined) {
+                this.battery = data.battery;
+            }
+            if ("sensors" in data && data.sensors != undefined) {
+                this.sensors = data.sensors;
+            }
+            if ("cellular" in data && data.cellular != undefined) {
+                this.cellular = data.cellular;
             }
         }
     }
-    get status() {
-        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    get date() {
+        return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
     }
-    set status(value: number) {
+    set date(value: string) {
         pb_1.Message.setField(this, 1, value);
     }
+    get location() {
+        return pb_1.Message.getWrapperField(this, Location, 2) as Location;
+    }
+    set location(value: Location) {
+        pb_1.Message.setWrapperField(this, 2, value);
+    }
+    get has_location() {
+        return pb_1.Message.getField(this, 2) != null;
+    }
+    get battery() {
+        return pb_1.Message.getWrapperField(this, Battery, 3) as Battery;
+    }
+    set battery(value: Battery) {
+        pb_1.Message.setWrapperField(this, 3, value);
+    }
+    get has_battery() {
+        return pb_1.Message.getField(this, 3) != null;
+    }
+    get sensors() {
+        return pb_1.Message.getWrapperField(this, Sensors, 4) as Sensors;
+    }
+    set sensors(value: Sensors) {
+        pb_1.Message.setWrapperField(this, 4, value);
+    }
+    get has_sensors() {
+        return pb_1.Message.getField(this, 4) != null;
+    }
+    get cellular() {
+        return pb_1.Message.getWrapperField(this, Cellular, 5) as Cellular;
+    }
+    set cellular(value: Cellular) {
+        pb_1.Message.setWrapperField(this, 5, value);
+    }
+    get has_cellular() {
+        return pb_1.Message.getField(this, 5) != null;
+    }
     static fromObject(data: {
-        status?: number;
-    }): PointResponse {
-        const message = new PointResponse({});
-        if (data.status != null) {
-            message.status = data.status;
+        date?: string;
+        location?: ReturnType<typeof Location.prototype.toObject>;
+        battery?: ReturnType<typeof Battery.prototype.toObject>;
+        sensors?: ReturnType<typeof Sensors.prototype.toObject>;
+        cellular?: ReturnType<typeof Cellular.prototype.toObject>;
+    }): Telemetry {
+        const message = new Telemetry({});
+        if (data.date != null) {
+            message.date = data.date;
+        }
+        if (data.location != null) {
+            message.location = Location.fromObject(data.location);
+        }
+        if (data.battery != null) {
+            message.battery = Battery.fromObject(data.battery);
+        }
+        if (data.sensors != null) {
+            message.sensors = Sensors.fromObject(data.sensors);
+        }
+        if (data.cellular != null) {
+            message.cellular = Cellular.fromObject(data.cellular);
         }
         return message;
     }
     toObject() {
         const data: {
-            status?: number;
+            date?: string;
+            location?: ReturnType<typeof Location.prototype.toObject>;
+            battery?: ReturnType<typeof Battery.prototype.toObject>;
+            sensors?: ReturnType<typeof Sensors.prototype.toObject>;
+            cellular?: ReturnType<typeof Cellular.prototype.toObject>;
         } = {};
-        if (this.status != null) {
-            data.status = this.status;
+        if (this.date != null) {
+            data.date = this.date;
+        }
+        if (this.location != null) {
+            data.location = this.location.toObject();
+        }
+        if (this.battery != null) {
+            data.battery = this.battery.toObject();
+        }
+        if (this.sensors != null) {
+            data.sensors = this.sensors.toObject();
+        }
+        if (this.cellular != null) {
+            data.cellular = this.cellular.toObject();
         }
         return data;
     }
@@ -113,19 +220,39 @@ export class PointResponse extends pb_1.Message {
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
-        if (this.status != 0)
-            writer.writeInt32(1, this.status);
+        if (this.date.length)
+            writer.writeString(1, this.date);
+        if (this.has_location)
+            writer.writeMessage(2, this.location, () => this.location.serialize(writer));
+        if (this.has_battery)
+            writer.writeMessage(3, this.battery, () => this.battery.serialize(writer));
+        if (this.has_sensors)
+            writer.writeMessage(4, this.sensors, () => this.sensors.serialize(writer));
+        if (this.has_cellular)
+            writer.writeMessage(5, this.cellular, () => this.cellular.serialize(writer));
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): PointResponse {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new PointResponse();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Telemetry {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Telemetry();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
                 case 1:
-                    message.status = reader.readInt32();
+                    message.date = reader.readString();
+                    break;
+                case 2:
+                    reader.readMessage(message.location, () => message.location = Location.deserialize(reader));
+                    break;
+                case 3:
+                    reader.readMessage(message.battery, () => message.battery = Battery.deserialize(reader));
+                    break;
+                case 4:
+                    reader.readMessage(message.sensors, () => message.sensors = Sensors.deserialize(reader));
+                    break;
+                case 5:
+                    reader.readMessage(message.cellular, () => message.cellular = Cellular.deserialize(reader));
                     break;
                 default: reader.skipField();
             }
@@ -135,8 +262,684 @@ export class PointResponse extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static deserializeBinary(bytes: Uint8Array): PointResponse {
-        return PointResponse.deserialize(bytes);
+    static deserializeBinary(bytes: Uint8Array): Telemetry {
+        return Telemetry.deserialize(bytes);
+    }
+}
+export class Location extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        latitude?: number;
+        longitude?: number;
+        speed?: number;
+        accuracy?: number;
+        altitude?: number;
+        provider?: string;
+        timeToFix?: number;
+        bearing?: number;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("latitude" in data && data.latitude != undefined) {
+                this.latitude = data.latitude;
+            }
+            if ("longitude" in data && data.longitude != undefined) {
+                this.longitude = data.longitude;
+            }
+            if ("speed" in data && data.speed != undefined) {
+                this.speed = data.speed;
+            }
+            if ("accuracy" in data && data.accuracy != undefined) {
+                this.accuracy = data.accuracy;
+            }
+            if ("altitude" in data && data.altitude != undefined) {
+                this.altitude = data.altitude;
+            }
+            if ("provider" in data && data.provider != undefined) {
+                this.provider = data.provider;
+            }
+            if ("timeToFix" in data && data.timeToFix != undefined) {
+                this.timeToFix = data.timeToFix;
+            }
+            if ("bearing" in data && data.bearing != undefined) {
+                this.bearing = data.bearing;
+            }
+        }
+    }
+    get latitude() {
+        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    }
+    set latitude(value: number) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get longitude() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set longitude(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    get speed() {
+        return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+    }
+    set speed(value: number) {
+        pb_1.Message.setField(this, 3, value);
+    }
+    get accuracy() {
+        return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+    }
+    set accuracy(value: number) {
+        pb_1.Message.setField(this, 4, value);
+    }
+    get altitude() {
+        return pb_1.Message.getFieldWithDefault(this, 5, 0) as number;
+    }
+    set altitude(value: number) {
+        pb_1.Message.setField(this, 5, value);
+    }
+    get provider() {
+        return pb_1.Message.getFieldWithDefault(this, 6, "") as string;
+    }
+    set provider(value: string) {
+        pb_1.Message.setField(this, 6, value);
+    }
+    get timeToFix() {
+        return pb_1.Message.getFieldWithDefault(this, 7, 0) as number;
+    }
+    set timeToFix(value: number) {
+        pb_1.Message.setField(this, 7, value);
+    }
+    get bearing() {
+        return pb_1.Message.getFieldWithDefault(this, 8, 0) as number;
+    }
+    set bearing(value: number) {
+        pb_1.Message.setField(this, 8, value);
+    }
+    static fromObject(data: {
+        latitude?: number;
+        longitude?: number;
+        speed?: number;
+        accuracy?: number;
+        altitude?: number;
+        provider?: string;
+        timeToFix?: number;
+        bearing?: number;
+    }): Location {
+        const message = new Location({});
+        if (data.latitude != null) {
+            message.latitude = data.latitude;
+        }
+        if (data.longitude != null) {
+            message.longitude = data.longitude;
+        }
+        if (data.speed != null) {
+            message.speed = data.speed;
+        }
+        if (data.accuracy != null) {
+            message.accuracy = data.accuracy;
+        }
+        if (data.altitude != null) {
+            message.altitude = data.altitude;
+        }
+        if (data.provider != null) {
+            message.provider = data.provider;
+        }
+        if (data.timeToFix != null) {
+            message.timeToFix = data.timeToFix;
+        }
+        if (data.bearing != null) {
+            message.bearing = data.bearing;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            latitude?: number;
+            longitude?: number;
+            speed?: number;
+            accuracy?: number;
+            altitude?: number;
+            provider?: string;
+            timeToFix?: number;
+            bearing?: number;
+        } = {};
+        if (this.latitude != null) {
+            data.latitude = this.latitude;
+        }
+        if (this.longitude != null) {
+            data.longitude = this.longitude;
+        }
+        if (this.speed != null) {
+            data.speed = this.speed;
+        }
+        if (this.accuracy != null) {
+            data.accuracy = this.accuracy;
+        }
+        if (this.altitude != null) {
+            data.altitude = this.altitude;
+        }
+        if (this.provider != null) {
+            data.provider = this.provider;
+        }
+        if (this.timeToFix != null) {
+            data.timeToFix = this.timeToFix;
+        }
+        if (this.bearing != null) {
+            data.bearing = this.bearing;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.latitude != 0)
+            writer.writeDouble(1, this.latitude);
+        if (this.longitude != 0)
+            writer.writeDouble(2, this.longitude);
+        if (this.speed != 0)
+            writer.writeDouble(3, this.speed);
+        if (this.accuracy != 0)
+            writer.writeDouble(4, this.accuracy);
+        if (this.altitude != 0)
+            writer.writeDouble(5, this.altitude);
+        if (this.provider.length)
+            writer.writeString(6, this.provider);
+        if (this.timeToFix != 0)
+            writer.writeDouble(7, this.timeToFix);
+        if (this.bearing != 0)
+            writer.writeDouble(8, this.bearing);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Location {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Location();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.latitude = reader.readDouble();
+                    break;
+                case 2:
+                    message.longitude = reader.readDouble();
+                    break;
+                case 3:
+                    message.speed = reader.readDouble();
+                    break;
+                case 4:
+                    message.accuracy = reader.readDouble();
+                    break;
+                case 5:
+                    message.altitude = reader.readDouble();
+                    break;
+                case 6:
+                    message.provider = reader.readString();
+                    break;
+                case 7:
+                    message.timeToFix = reader.readDouble();
+                    break;
+                case 8:
+                    message.bearing = reader.readDouble();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): Location {
+        return Location.deserialize(bytes);
+    }
+}
+export class Battery extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        voltage?: number;
+        current?: number;
+        temperature?: number;
+        level?: number;
+        charging?: boolean;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("voltage" in data && data.voltage != undefined) {
+                this.voltage = data.voltage;
+            }
+            if ("current" in data && data.current != undefined) {
+                this.current = data.current;
+            }
+            if ("temperature" in data && data.temperature != undefined) {
+                this.temperature = data.temperature;
+            }
+            if ("level" in data && data.level != undefined) {
+                this.level = data.level;
+            }
+            if ("charging" in data && data.charging != undefined) {
+                this.charging = data.charging;
+            }
+        }
+    }
+    get voltage() {
+        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    }
+    set voltage(value: number) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get current() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set current(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    get temperature() {
+        return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+    }
+    set temperature(value: number) {
+        pb_1.Message.setField(this, 3, value);
+    }
+    get level() {
+        return pb_1.Message.getFieldWithDefault(this, 4, 0) as number;
+    }
+    set level(value: number) {
+        pb_1.Message.setField(this, 4, value);
+    }
+    get charging() {
+        return pb_1.Message.getFieldWithDefault(this, 5, false) as boolean;
+    }
+    set charging(value: boolean) {
+        pb_1.Message.setField(this, 5, value);
+    }
+    static fromObject(data: {
+        voltage?: number;
+        current?: number;
+        temperature?: number;
+        level?: number;
+        charging?: boolean;
+    }): Battery {
+        const message = new Battery({});
+        if (data.voltage != null) {
+            message.voltage = data.voltage;
+        }
+        if (data.current != null) {
+            message.current = data.current;
+        }
+        if (data.temperature != null) {
+            message.temperature = data.temperature;
+        }
+        if (data.level != null) {
+            message.level = data.level;
+        }
+        if (data.charging != null) {
+            message.charging = data.charging;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            voltage?: number;
+            current?: number;
+            temperature?: number;
+            level?: number;
+            charging?: boolean;
+        } = {};
+        if (this.voltage != null) {
+            data.voltage = this.voltage;
+        }
+        if (this.current != null) {
+            data.current = this.current;
+        }
+        if (this.temperature != null) {
+            data.temperature = this.temperature;
+        }
+        if (this.level != null) {
+            data.level = this.level;
+        }
+        if (this.charging != null) {
+            data.charging = this.charging;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.voltage != 0)
+            writer.writeDouble(1, this.voltage);
+        if (this.current != 0)
+            writer.writeDouble(2, this.current);
+        if (this.temperature != 0)
+            writer.writeDouble(3, this.temperature);
+        if (this.level != 0)
+            writer.writeInt32(4, this.level);
+        if (this.charging != false)
+            writer.writeBool(5, this.charging);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Battery {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Battery();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.voltage = reader.readDouble();
+                    break;
+                case 2:
+                    message.current = reader.readDouble();
+                    break;
+                case 3:
+                    message.temperature = reader.readDouble();
+                    break;
+                case 4:
+                    message.level = reader.readInt32();
+                    break;
+                case 5:
+                    message.charging = reader.readBool();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): Battery {
+        return Battery.deserialize(bytes);
+    }
+}
+export class Sensors extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        barometer?: number;
+        light?: number;
+        proximity?: number;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("barometer" in data && data.barometer != undefined) {
+                this.barometer = data.barometer;
+            }
+            if ("light" in data && data.light != undefined) {
+                this.light = data.light;
+            }
+            if ("proximity" in data && data.proximity != undefined) {
+                this.proximity = data.proximity;
+            }
+        }
+    }
+    get barometer() {
+        return pb_1.Message.getFieldWithDefault(this, 1, 0) as number;
+    }
+    set barometer(value: number) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get light() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set light(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    get proximity() {
+        return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+    }
+    set proximity(value: number) {
+        pb_1.Message.setField(this, 3, value);
+    }
+    static fromObject(data: {
+        barometer?: number;
+        light?: number;
+        proximity?: number;
+    }): Sensors {
+        const message = new Sensors({});
+        if (data.barometer != null) {
+            message.barometer = data.barometer;
+        }
+        if (data.light != null) {
+            message.light = data.light;
+        }
+        if (data.proximity != null) {
+            message.proximity = data.proximity;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            barometer?: number;
+            light?: number;
+            proximity?: number;
+        } = {};
+        if (this.barometer != null) {
+            data.barometer = this.barometer;
+        }
+        if (this.light != null) {
+            data.light = this.light;
+        }
+        if (this.proximity != null) {
+            data.proximity = this.proximity;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.barometer != 0)
+            writer.writeDouble(1, this.barometer);
+        if (this.light != 0)
+            writer.writeDouble(2, this.light);
+        if (this.proximity != 0)
+            writer.writeDouble(3, this.proximity);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Sensors {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Sensors();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.barometer = reader.readDouble();
+                    break;
+                case 2:
+                    message.light = reader.readDouble();
+                    break;
+                case 3:
+                    message.proximity = reader.readDouble();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): Sensors {
+        return Sensors.deserialize(bytes);
+    }
+}
+export class Cellular extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        networkType?: string;
+        signalStrength?: number;
+        signalPower?: number;
+        cellTower?: string;
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("networkType" in data && data.networkType != undefined) {
+                this.networkType = data.networkType;
+            }
+            if ("signalStrength" in data && data.signalStrength != undefined) {
+                this.signalStrength = data.signalStrength;
+            }
+            if ("signalPower" in data && data.signalPower != undefined) {
+                this.signalPower = data.signalPower;
+            }
+            if ("cellTower" in data && data.cellTower != undefined) {
+                this.cellTower = data.cellTower;
+            }
+        }
+    }
+    get networkType() {
+        return pb_1.Message.getFieldWithDefault(this, 1, "") as string;
+    }
+    set networkType(value: string) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    get signalStrength() {
+        return pb_1.Message.getFieldWithDefault(this, 2, 0) as number;
+    }
+    set signalStrength(value: number) {
+        pb_1.Message.setField(this, 2, value);
+    }
+    get signalPower() {
+        return pb_1.Message.getFieldWithDefault(this, 3, 0) as number;
+    }
+    set signalPower(value: number) {
+        pb_1.Message.setField(this, 3, value);
+    }
+    get cellTower() {
+        return pb_1.Message.getFieldWithDefault(this, 4, "") as string;
+    }
+    set cellTower(value: string) {
+        pb_1.Message.setField(this, 4, value);
+    }
+    static fromObject(data: {
+        networkType?: string;
+        signalStrength?: number;
+        signalPower?: number;
+        cellTower?: string;
+    }): Cellular {
+        const message = new Cellular({});
+        if (data.networkType != null) {
+            message.networkType = data.networkType;
+        }
+        if (data.signalStrength != null) {
+            message.signalStrength = data.signalStrength;
+        }
+        if (data.signalPower != null) {
+            message.signalPower = data.signalPower;
+        }
+        if (data.cellTower != null) {
+            message.cellTower = data.cellTower;
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            networkType?: string;
+            signalStrength?: number;
+            signalPower?: number;
+            cellTower?: string;
+        } = {};
+        if (this.networkType != null) {
+            data.networkType = this.networkType;
+        }
+        if (this.signalStrength != null) {
+            data.signalStrength = this.signalStrength;
+        }
+        if (this.signalPower != null) {
+            data.signalPower = this.signalPower;
+        }
+        if (this.cellTower != null) {
+            data.cellTower = this.cellTower;
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.networkType.length)
+            writer.writeString(1, this.networkType);
+        if (this.signalStrength != 0)
+            writer.writeDouble(2, this.signalStrength);
+        if (this.signalPower != 0)
+            writer.writeDouble(3, this.signalPower);
+        if (this.cellTower.length)
+            writer.writeString(4, this.cellTower);
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): Cellular {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new Cellular();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    message.networkType = reader.readString();
+                    break;
+                case 2:
+                    message.signalStrength = reader.readDouble();
+                    break;
+                case 3:
+                    message.signalPower = reader.readDouble();
+                    break;
+                case 4:
+                    message.cellTower = reader.readString();
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): Cellular {
+        return Cellular.deserialize(bytes);
+    }
+}
+export class TelemetryResponse extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {}) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") { }
+    }
+    static fromObject(data: {}): TelemetryResponse {
+        const message = new TelemetryResponse({});
+        return message;
+    }
+    toObject() {
+        const data: {} = {};
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): TelemetryResponse {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new TelemetryResponse();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): TelemetryResponse {
+        return TelemetryResponse.deserialize(bytes);
     }
 }
 interface GrpcUnaryServiceInterface<P, R> {
@@ -165,28 +968,28 @@ interface GrpcPromiseServiceInterface<P, R> {
 }
 export abstract class UnimplementedTrackerService {
     static definition = {
-        addPoint: {
-            path: "/Tracker/addPoint",
+        addTelemetry: {
+            path: "/Tracker/addTelemetry",
             requestStream: false,
             responseStream: false,
-            requestSerialize: (message: PointRequest) => Buffer.from(message.serialize()),
-            requestDeserialize: (bytes: Buffer) => PointRequest.deserialize(new Uint8Array(bytes)),
-            responseSerialize: (message: PointResponse) => Buffer.from(message.serialize()),
-            responseDeserialize: (bytes: Buffer) => PointResponse.deserialize(new Uint8Array(bytes))
+            requestSerialize: (message: TelemetryRequest) => Buffer.from(message.serialize()),
+            requestDeserialize: (bytes: Buffer) => TelemetryRequest.deserialize(new Uint8Array(bytes)),
+            responseSerialize: (message: TelemetryResponse) => Buffer.from(message.serialize()),
+            responseDeserialize: (bytes: Buffer) => TelemetryResponse.deserialize(new Uint8Array(bytes))
         }
     };
     [method: string]: grpc_1.UntypedHandleCall;
-    abstract addPoint(call: grpc_1.ServerUnaryCall<PointRequest, PointResponse>, callback: grpc_1.sendUnaryData<PointResponse>): void;
+    abstract addTelemetry(call: grpc_1.ServerUnaryCall<TelemetryRequest, TelemetryResponse>, callback: grpc_1.sendUnaryData<TelemetryResponse>): void;
 }
 export class TrackerClient extends grpc_1.makeGenericClientConstructor(UnimplementedTrackerService.definition, "Tracker", {}) {
     constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
         super(address, credentials, options);
     }
-    addPoint: GrpcPromiseServiceInterface<PointRequest, PointResponse> = (message: PointRequest, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): Promise<PointResponse> => { if (!metadata) {
+    addTelemetry: GrpcPromiseServiceInterface<TelemetryRequest, TelemetryResponse> = (message: TelemetryRequest, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): Promise<TelemetryResponse> => { if (!metadata) {
         metadata = new grpc_1.Metadata;
     } if (!options) {
         options = {};
-    } return new Promise((resolve, reject) => super.addPoint(message, metadata, options, (error: grpc_1.ServiceError, response: PointResponse) => {
+    } return new Promise((resolve, reject) => super.addTelemetry(message, metadata, options, (error: grpc_1.ServiceError, response: TelemetryResponse) => {
         if (error) {
             reject(error);
         }
