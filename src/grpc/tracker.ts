@@ -19,7 +19,7 @@ export class TrackerService extends UnimplementedTrackerService {
       const telemetries = call.request.telemetries.map(t => {
         const obj = t.toObject();
         return {
-          date: obj.date ?? null,
+          date: obj.date?.trim() ? obj.date : null,
           location: {
             latitude: obj.location?.latitude ?? null,
             longitude: obj.location?.longitude ?? null,
