@@ -48,4 +48,4 @@ USER nodejs
 
 ENV PORT=3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node --enable-source-maps --no-warnings=ExperimentalWarning ./dist/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node --enable-source-maps --no-warnings=ExperimentalWarning ./dist/src/server.js"]
