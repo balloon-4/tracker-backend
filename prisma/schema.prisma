@@ -14,7 +14,6 @@ datasource db {
 
 model telemetry {
   deviceId       String
-  session        String
   date           DateTime @db.Timestamptz(6)
   // Location fields
   latitude       Float?
@@ -43,7 +42,7 @@ model telemetry {
 
   device device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
 
-  @@id([date, session, deviceId])
+  @@id([date, deviceId])
 }
 
 model log {

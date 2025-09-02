@@ -10,7 +10,7 @@ const createTelemetry = async (
   try {
     const data = input.map(
       ({ date, location, battery, sensors, cellular }) => ({
-        session: deviceId,
+        deviceId: deviceId,
         date: new Date(date ?? Date.now()),
         // Location
         latitude: location.latitude ?? null,
