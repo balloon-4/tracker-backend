@@ -13,6 +13,7 @@ datasource db {
 }
 
 model telemetry {
+  deviceId       String
   session        String
   date           DateTime @db.Timestamptz(6)
   // Location fields
@@ -40,7 +41,9 @@ model telemetry {
   signalPower    Float?
   cellTower      String?
 
-  @@id([date, session])
+  device device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@id([date, session, deviceId])
 }
 
 model log {
@@ -49,4 +52,10 @@ model log {
   date    DateTime @db.Timestamptz(6)
   level   String
   session String
+}
+
+model device {
+  id          String      @id
+  name        String
+  telemetries telemetry[]
 }
