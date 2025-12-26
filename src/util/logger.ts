@@ -12,7 +12,7 @@ const transport = pino.transport({
           : process.env["LOG_LEVEL"] || "info",
       options: {
         // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-        include: process.env["DEBUG"] === "true" ? undefined : "time,level,msg",
+        include: process.env["DEBUG"] === "true" ? undefined : "time,level,msg,err",
       },
     },
   ],
