@@ -53,7 +53,7 @@ const createTelemetry = async (
       data: { count: result.count },
     };
   } catch (error) {
-    logger.error('Error creating telemetry:', error);
+    logger.error(error, 'Error creating telemetry:');
 
     return {
       success: false,

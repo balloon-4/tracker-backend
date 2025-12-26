@@ -58,7 +58,7 @@ export class TrackerService extends UnimplementedTrackerService {
         callback({ code: grpc.status.INTERNAL, message: result.error?.detail || "Unknown error" }, null);
       }
     } catch (error) {
-      logger.error("Error in addTelemetry:", error);
+      logger.error(error, "Error in addTelemetry:");
       callback({ code: grpc.status.INTERNAL, message: (error as Error).message }, null);
     }
   }
